@@ -15,10 +15,10 @@ public interface PatientRepository extends JpaRepository<Patient, Long>{
 	String findLastPatientId(String formattedCurrentDateTime);
 
 	@Query
-	boolean existsByPatientEmail(String email);
+	Boolean existsByPatientEmail(String email);
 	
 	@Query
-	boolean existsByPatientPhoneNum(String patientPhoneNum);
+	Boolean existsByPatientPhoneNum(String patientPhoneNum);
 	
 	@Query
 	Optional<Patient> findByIgnoreCasePatientName(String name);

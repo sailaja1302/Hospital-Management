@@ -33,7 +33,7 @@ public class PatientServiceImpl implements PatientService{
 		String patientEmail = patientRequest.getPatientEmail();
 		String patientPhoneNumb = patientRequest.getPatientPhoneNum();
 		
-		if(patientEmail != null && ! patientEmail.trim().isEmpty()) {
+		if(patientEmail != null && ! patientEmail.trim().isEmpty() && !patientEmail.equalsIgnoreCase(patientEmail)) {
 			boolean emailExists = patientRepository.existsByPatientEmail(patientEmail);
 			if(emailExists) {
 				throw new IllegalArgumentException("Email already registered with ID : "+patientEmail);
@@ -43,7 +43,7 @@ public class PatientServiceImpl implements PatientService{
 			throw new IllegalArgumentException("Email is mandatory for registration");
 		}
 		
-		if(patientPhoneNumb != null && !patientPhoneNumb.trim().isEmpty()) {
+		if(patientPhoneNumb != null && !patientPhoneNumb.trim().isEmpty() && !patientPhoneNumb.equals(patientPhoneNumb)) {
 			boolean phoneNumExists = patientRepository.existsByPatientPhoneNum(patientPhoneNumb);
 			if(phoneNumExists) {
 				throw new IllegalArgumentException("Phone number already registered : "+patientPhoneNumb);
@@ -71,22 +71,20 @@ public class PatientServiceImpl implements PatientService{
 		String patientEmail = patientRequest.getPatientEmail();
 		String patientPhoneNumb = patientRequest.getPatientPhoneNum();
 		
-		if(patientEmail != null && !patientEmail.trim().isEmpty() && ! patientEmail.equalsIgnoreCase(patientEmail) ) {
-			boolean emailExists = patientRepository.existsByPatientEmail(patientEmail);
+		if(patientEmail != null && !patientEmail.trim().isEmpty() && ! patientEmail.equalsIgnoreCase(patient.getPatientEmail()) ) {
+			Boolean emailExists = patientRepository.existsByPatientEmail(patientEmail);
 			if(emailExists) {
-				throw new IllegalArgumentException("Email already registered with ID : "+patientEmail);
+				throw new IllegalArgumentException("Email already exists : "+patientEmail);
 			}
 		}
 		
-		
-		if(patientPhoneNumb != null && patientPhoneNumb != null && ! patientPhoneNumb.equals(patientPhoneNumb)) {
-			boolean phoneNumExists = patientRepository.existsByPatientPhoneNum(patientPhoneNumb);
+		if(patientPhoneNumb != null) {
+			Boolean phoneNumExists = patientRepository.existsByPatientPhoneNum(patientPhoneNumb);
 			if(phoneNumExists) {
 				throw new IllegalArgumentException("Phone number already registered : "+patientPhoneNumb);
 			}
 		}
-		
-		Patient updatedPatient = PatientBuilder.updatePatientFromRegisterPatientRegisterRequestDTO(patientRequest, patient);
+		Patient updatedPatient = PatientBuilder.updatePatientFromRegisterPatientRegisterRequestDTO(patientRequest,patient);
 		
 		Patient savedPatient = patientRepository.save(updatedPatient);
 		PatientResponseDTO patientResponseFromPatient = PatientBuilder.buildPatientResponseFromPatient(savedPatient);
