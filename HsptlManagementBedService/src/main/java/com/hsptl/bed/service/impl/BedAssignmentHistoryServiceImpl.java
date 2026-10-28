@@ -99,10 +99,22 @@ public class BedAssignmentHistoryServiceImpl implements BedAssignmentService{
 		 
 		 bedAssignmentHistory.setBed(existingBed);
 		 bedAssignmentHistory.setBedNum(bedNumber);
+		 bedAssignmentHistory.setAssignedAt(null);
 		 bedAssignmentHistory.setPatientId(null);
 		 bedAssignmentHistory.setVacatedAt(LocalDateTime.now());
 		 
+		 existingBed.getBedAssignmentHistory().add(bedAssignmentHistory);
+//		 existingBed.getBedAssignmentHistory().remove(bedAssignmentHistory.getAssignedAt());
+		 bedAssignmentRepository.save(bedAssignmentHistory);
+		 
 		 BedAssignmentHistoryResponseDTO bedAssignmentResponse = new BedAssignmentHistoryResponseDTO();
+//		
+//		 bedAssignmentResponse.setBed(existingBed);
+//		 bedAssignmentResponse.setPatientId(null);
+//		 
+//		 bedAssignmentResponse.setVacatedAt(LocalDateTime.now());
+//		 
+		 
 		 
 		 BeanUtils.copyProperties(bedAssignmentHistory, bedAssignmentResponse);
 		return "Successfully vacated Bed with ID : "+bedNumber +" in the room "+roomNum;

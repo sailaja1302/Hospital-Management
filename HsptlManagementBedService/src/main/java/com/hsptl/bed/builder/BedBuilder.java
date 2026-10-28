@@ -22,6 +22,7 @@ public class BedBuilder {
 				.builder()
 				.bedId(bed.getBedId())
 				.isOccupied(bed.getIsOccupied())
+				.roomNum(bed.getRoomNum().getRoomNum())
 				.build();
 		
 	}
