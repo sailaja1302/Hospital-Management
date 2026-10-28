@@ -29,6 +29,8 @@ public class Doctor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long doctorId;
 	
+	private String doctorName;
+	
 	@JoinColumn(name="doctor_id")
 	@OneToOne(fetch = FetchType.LAZY)
 	private Staff staff;

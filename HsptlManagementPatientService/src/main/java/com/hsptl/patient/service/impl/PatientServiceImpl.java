@@ -121,7 +121,6 @@ public class PatientServiceImpl implements PatientService{
 
 	@Override
 	public List<PatientResponseDTO> getPatientByDoctorAndDatesRange(Long doctorId, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-//		List<Patient> patientsList = patientRepository.findByIdIn(staffId);
 		List<Long> patientIdsByDoctorAndDatesRange = appointmentClient.getPatientIdsByDoctorAndDatesRange(doctorId, startDateTime, endDateTime);
 		
 		if(patientIdsByDoctorAndDatesRange == null || patientIdsByDoctorAndDatesRange.isEmpty()) {

@@ -61,4 +61,9 @@ public class StaffController {
 		return new ResponseEntity<>(staffService.getStaffBySpec(spec),HttpStatus.OK);
 	}
 	
+	@GetMapping("/get/doc/nonDoc/{staffType}")
+	public ResponseEntity<List<StaffResponseDTO>> getStaffByStaffType(@PathVariable String staffType){
+		return new ResponseEntity<>(staffService.getStaffByStaffType(staffType),HttpStatus.OK);
+	}
+	
 }

@@ -58,10 +58,11 @@ public class StaffServiceImpl implements StaffService {
 		Staff staffFromRegisterStaffDto = StaffBuilder.buildStaffFromRegisterStaffDto(registerStaffDto);
 		Staff savedStaff = staffRepository.save(staffFromRegisterStaffDto);
 		
-		if(StaffType.DOCTOR.equals(registerStaffDto.getStaffType())) {
+		if(StaffType.DOCTOR.equals(registerStaffDto.getStaffType()) && savedStaff.getSpec() != null) {
 			Doctor doctor = new Doctor();
 			
 			doctor.setStaff(savedStaff);
+			doctor.setDoctorName(registerStaffDto.getFirstname());
 			doctor.setSpecialization(registerStaffDto.getSpecialization());
 			doctor.setIsActive(true);
 			
@@ -108,7 +109,7 @@ public class StaffServiceImpl implements StaffService {
 			staffById.setPhnnum(phoneNum);
 		}
 		
-		if(StaffType.DOCTOR.equals(registerStaffRequestDto.getStaffType())) {
+		if(StaffType.DOCTOR.equals(registerStaffRequestDto.getStaffType()) && staffById.getSpec() != null) {
 			
 			Boolean existsByStaff = doctorRepository
 									.existsByStaff(staffById);
@@ -116,6 +117,7 @@ public class StaffServiceImpl implements StaffService {
 			if(!existsByStaff) {
 				Doctor doctor = new Doctor();
 				doctor.setStaff(staffById);
+				doctor.setDoctorName(staffById.getFirstname());
 				doctor.setSpecialization(registerStaffRequestDto.getSpecialization());
 				doctor.setIsActive(true);
 				doctorRepository.save(doctor);
@@ -195,6 +197,26 @@ public class StaffServiceImpl implements StaffService {
 
 	}
 		
+	}
+
+	@Override
+	public List<StaffResponseDTO> getStaffByStaffType(String staffType) {
+		
+		try {
+		StaffType staffTypeUpC = StaffType.valueOf(staffType.toUpperCase().trim());
+		List<StaffResponseDTO> staffByStaffType = staffRepository
+										.findByStaffType(staffTypeUpC)
+										.stream()
+										.map(StaffBuilder::buildStaffResponseDTOFromStaff)
+										.toList();
+		return staffByStaffType;
+		
+		} catch(IllegalArgumentException e) {
+		
+			throw new StaffNotFoundException("Staff not Found with stafftype : "+staffType);
+		}
+		
+				
 	}
 
 }

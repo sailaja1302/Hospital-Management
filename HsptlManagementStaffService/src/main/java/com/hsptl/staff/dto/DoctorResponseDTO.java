@@ -22,6 +22,8 @@ public class DoctorResponseDTO {
 	
 	private Long doctorId;
 	
+	private String doctorName;
+	
 	private Staff staff;
 	
 	private Specialization specialization;
